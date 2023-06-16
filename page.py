@@ -4,7 +4,7 @@ import os
 from langchain.indexes import VectorstoreIndexCreator
 from langchain.document_loaders import YoutubeLoader
 
-os.environ['OPENAI_API_KEY'] = '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'
+os.environ['OPENAI_API_KEY'] = st.secrets['OPENAI_API_KEY']
 
 # Function to get video information
 
@@ -50,7 +50,9 @@ def answer_ytb(url, query, lang):
 
 
 if __name__ == '__main__':
-    st.title('YouTube Question Answering')
+    st.markdown('<h1 align="center">YouTube Question Answering 🎥</h1>',
+                unsafe_allow_html=True)
+    st.subheader('')
     try:
         link = st.text_input('Enter the video link')
         if link:
@@ -58,15 +60,17 @@ if __name__ == '__main__':
                                 'en', 'fr', 'de', 'es'])
             if lang:
                 title, author = get_info(link, lang)
-                st.subheader('Video Information 🎥')
-                st.write('Title:', title)
-                st.write('Author:', author)
+                st.markdown(
+                    f'<h2 align="center">Title : {title} </h2>', unsafe_allow_html=True)
+                st.markdown(
+                    f'<h2 align="center">Author : {author} </h2>', unsafe_allow_html=True)
 
                 if st.checkbox('Is this the correct video? ✅'):
                     query = st.text_input('Ask your question')
                     if query and lang:
                         response = answer_ytb(link, query, lang)
-                        st.subheader('Answer to your question')
+                        st.markdown(
+                            '<h3 align="center">Answer to your question</h3>', unsafe_allow_html=True)
                         st.write(response)
     except:
         st.error('An error occurred. Is the correct language selected? ❌')
